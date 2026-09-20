@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>RPM — Turntable Speed &amp; Accuracy</title>
+<meta name="description" content="Measure your turntable's speed accuracy and wow &amp; flutter with your iPhone's gyroscope.">
+<meta name="theme-color" content="#0b0d10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RPM">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="bar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-name">RPM</span>
+    <span class="badge" id="simBadge" hidden>SIM</span>
+  </div>
+  <div class="bar-actions">
+    <button class="icon-btn" id="btnHistory" aria-label="History" title="History">&#9776;</button>
+    <button class="icon-btn" id="btnSettings" aria-label="Settings" title="Settings">&#9881;</button>
+    <button class="icon-btn" id="btnHelp" aria-label="Help" title="Help">?</button>
+  </div>
+</header>
+
+<main>
+  <!-- ---------------- readout ---------------- -->
+  <section class="card readout" id="readout">
+    <div class="spin-wrap" id="spinWrap">
+      <div class="rpm-line">
+        <span class="rpm-value" id="rpmValue">--.--</span>
+        <span class="rpm-unit">RPM</span>
+      </div>
+      <div class="dev-line" id="devLine">
+        <span class="dev-pct" id="devPct">--</span>
+        <span class="dev-sep">·</span>
+        <span class="dev-cents" id="devCents">-- cents</span>
+      </div>
+    </div>
+
+    <div class="meter" id="meter">
+      <div class="meter-band" id="meterBand"></div>
+      <div class="meter-ticks" id="meterTicks"></div>
+      <div class="meter-zero"></div>
+      <div class="meter-needle" id="meterNeedle"></div>
+      <div class="meter-scale">
+        <span id="meterMin">-1%</span><span id="meterMid">on speed</span><span id="meterMax">+1%</span>
+      </div>
+    </div>
+
+    <div class="targets" id="targets" role="group" aria-label="Target speed"></div>
+    <p class="status" id="status">Press Start, then set the phone on the platter.</p>
+  </section>
+
+  <!-- ---------------- stats ---------------- -->
+  <section class="card stats">
+    <div class="stat"><span class="k">Average</span><span class="v" id="sAvg">--</span></div>
+    <div class="stat"><span class="k">Drift / 20 min side</span><span class="v" id="sDrift">--</span></div>
+    <div class="stat"><span class="k">W&amp;F peak</span><span class="v" id="sWfPeak">--</span></div>
+    <div class="stat"><span class="k">W&amp;F RMS</span><span class="v" id="sWfRms">--</span></div>
+    <div class="stat"><span class="k">Min / max</span><span class="v" id="sRange">--</span></div>
+    <div class="stat"><span class="k">Once per rev</span><span class="v" id="sHarm">--</span></div>
+    <div class="stat"><span class="k">Revolutions</span><span class="v" id="sRevs">--</span></div>
+    <div class="stat"><span class="k">Elapsed</span><span class="v" id="sTime">0:00</span></div>
+  </section>
+
+  <!-- ---------------- graphs ---------------- -->
+  <section class="card graphs">
+    <div class="tabs" role="tablist">
+      <button class="tab is-on" id="tabGraph" role="tab" aria-selected="true">Speed graph</button>
+      <button class="tab" id="tabMap" role="tab" aria-selected="false">Platter map</button>
+    </div>
+    <div class="canvas-wrap" id="wrapGraph"><canvas id="chart"></canvas></div>
+    <div class="canvas-wrap" id="wrapMap" hidden>
+      <canvas id="polar"></canvas>
+      <p class="hint">Average speed error by position of the platter through one revolution. A strong pattern
+        here points at something turning once per revolution — a worn belt joint, an off-centre pulley, motor cogging.</p>
+    </div>
+  </section>
+
+  <!-- ---------------- controls ---------------- -->
+  <div class="controls">
+    <button class="btn btn-primary" id="btnStart">Start</button>
+    <button class="btn" id="btnZero">Zero sensor</button>
+    <button class="btn" id="btnSave" disabled>Save run</button>
+  </div>
+  <p class="foot" id="sensorInfo"></p>
+</main>
+
+<!-- ---------------- sheets ---------------- -->
+<div class="sheet" id="sheetSettings" hidden>
+  <div class="sheet-inner">
+    <div class="sheet-head"><h2>Settings</h2><button class="icon-btn" data-close>&times;</button></div>
+
+    <label class="row"><span>Smoothing window<small id="lblSmooth"></small></span>
+      <input type="range" id="setSmooth" min="5" max="120" step="5"></label>
+
+    <label class="row"><span>“On speed” threshold<small id="lblThresh"></small></span>
+      <input type="range" id="setThresh" min="5" max="100" step="5"></label>
+
+    <label class="row"><span>Graph scale<small id="lblScale"></small></span>
+      <input type="range" id="setScale" min="1" max="20" step="1"></label>
+
+    <label class="row"><span>Graph window<small id="lblWindow"></small></span>
+      <input type="range" id="setWindow" min="15" max="300" step="15"></label>
+
+    <label class="row"><span>Settling time ignored at start<small id="lblSettle"></small></span>
+      <input type="range" id="setSettle" min="0" max="20" step="1"></label>
+
+    <label class="row switch"><span>Counter-rotate the display<small>Keeps the numbers upright while the phone spins</small></span>
+      <input type="checkbox" id="setCounter"></label>
+
+    <label class="row switch"><span>Freeze on stop<small>Keep the reading when the platter stops</small></span>
+      <input type="checkbox" id="setFreeze"></label>
+
+    <label class="row switch"><span>Keep screen awake<small>While measuring</small></span>
+      <input type="checkbox" id="setWake"></label>
+
+    <label class="row"><span>78 RPM reference<small>Some decks are cut for 78.26</small></span>
+      <select id="set78"><option value="78">78.00</option><option value="78.26">78.26</option></select></label>
+
+    <label class="row"><span>16 RPM reference</span>
+      <select id="set16"><option value="16.6667">16⅔</option><option value="16">16.00</option></select></label>
+
+    <div class="row block">
+      <span>Gyroscope scale calibration<small id="lblCal"></small></span>
+      <div class="btn-row">
+        <button class="btn btn-sm" id="btnCompass">Calibrate with compass</button>
+        <button class="btn btn-sm" id="btnCalReset">Reset to 1.000</button>
+      </div>
+      <p class="hint">Optional. Spins the platter for a minute and counts real revolutions with the magnetometer,
+        then corrects any scale error in the gyroscope. Do it once, away from speakers and motors.</p>
+    </div>
+
+    <div class="row block">
+      <span>Data</span>
+      <div class="btn-row">
+        <button class="btn btn-sm" id="btnExport">Export history CSV</button>
+        <button class="btn btn-sm danger" id="btnWipe">Erase history</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sheet" id="sheetHistory" hidden>
+  <div class="sheet-inner">
+    <div class="sheet-head"><h2>History</h2><button class="icon-btn" data-close>&times;</button></div>
+    <div id="historyList" class="history"></div>
+  </div>
+</div>
+
+<div class="sheet" id="sheetHelp" hidden>
+  <div class="sheet-inner">
+    <div class="sheet-head"><h2>How to use it</h2><button class="icon-btn" data-close>&times;</button></div>
+    <ol class="help">
+      <li>Put a record on the platter so the phone sits on vinyl, not on bare metal or the mat's ribs.</li>
+      <li>Press <b>Zero sensor</b> with the phone lying still on the stopped platter. Two seconds.</li>
+      <li>Press <b>Start</b>, lay the phone flat next to the spindle, and start the turntable.</li>
+      <li>Give it a full minute. Wow and flutter need revolutions to show themselves.</li>
+      <li>Stop the platter; the reading freezes. <b>Save run</b> keeps it in History.</li>
+    </ol>
+    <p class="hint">The gyroscope measures how fast the whole platter turns, so it does not matter where on the
+      record the phone sits, or whether it is centred. It does matter that the phone is flat and cannot slide.</p>
+    <h3>Reading the numbers</h3>
+    <ul class="help">
+      <li><b>Average</b> is the honest speed figure: total angle turned divided by total time.</li>
+      <li><b>%</b> is how far that is from the target. <b>Cents</b> is the same error as musical pitch — 17 cents is
+        roughly the smallest shift most people can hear on a sustained note.</li>
+      <li><b>W&amp;F peak</b> is the largest departure from your own average; <b>RMS</b> is the typical one.
+        Both are measured after smoothing, so they describe wow (slow wavering) rather than true flutter.</li>
+      <li><b>Once per rev</b> isolates the part of the error that repeats exactly once every turn.</li>
+    </ul>
+    <h3>What this cannot do</h3>
+    <p class="hint">Phone gyroscopes report about 60 readings a second, so anything wavering faster than ~30 times a
+      second is invisible here — that is the flutter end of the band a 3,150 Hz test record measures. Treat the
+      W&amp;F figures as a wow measurement and a good relative indicator, not as a lab result. The noise floor of
+      your own sensor is shown under the buttons after you zero it; readings near that floor are the phone, not the deck.</p>
+    <p class="hint" id="aboutLine"></p>
+  </div>
+</div>
+
+<div class="modal" id="modalCompass" hidden>
+  <div class="modal-inner">
+    <h2>Compass calibration</h2>
+    <p class="hint">Start the platter at any speed and let the phone ride for at least a minute. The compass counts
+      whole revolutions; the gyroscope is then corrected to agree with it.</p>
+    <div class="cal-grid">
+      <div><span class="k">Revolutions</span><span class="v" id="calRevs">0.00</span></div>
+      <div><span class="k">Compass RPM</span><span class="v" id="calCompass">--</span></div>
+      <div><span class="k">Gyro RPM</span><span class="v" id="calGyro">--</span></div>
+      <div><span class="k">Correction</span><span class="v" id="calFactor">--</span></div>
+    </div>
+    <p class="status" id="calStatus">Waiting for rotation…</p>
+    <div class="btn-row">
+      <button class="btn" id="calCancel">Cancel</button>
+      <button class="btn btn-primary" id="calApply" disabled>Apply</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
