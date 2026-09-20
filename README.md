@@ -94,6 +94,7 @@ and cannot creep.
 
 ```
 index.html          markup
+guide.html          the in-app guide: how to use it, how to read the numbers, fault diagnosis
 app.css             styling
 js/engine.js        the measurement: bias removal, axis tracking, angle integration, statistics
 js/sensors.js       DeviceMotion / DeviceOrientation access, permissions, wake lock, simulator

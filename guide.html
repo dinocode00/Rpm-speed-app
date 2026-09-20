@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guide — RPM</title>
+<meta name="theme-color" content="#0b0d10">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192">
+<link rel="stylesheet" href="app.css">
+<style>
+  .guide{max-width:560px;margin:0 auto}
+  .guide h1{font-size:1.5rem;margin:6px 0 4px;letter-spacing:-.01em}
+  .guide .lede{color:var(--dim);margin:0 0 20px}
+  .guide section{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;margin-bottom:12px;scroll-margin-top:12px}
+  .guide h2{font-size:1.05rem;margin:0 0 10px;display:flex;align-items:baseline;gap:9px}
+  .guide h2 .n{color:var(--accent);font-size:.72rem;font-weight:800;letter-spacing:.1em;
+    font-variant-numeric:tabular-nums}
+  .guide h3{font-size:.92rem;margin:20px 0 6px;color:var(--text)}
+  .guide h3:first-of-type{margin-top:14px}
+  .guide p,.guide li{color:var(--dim);font-size:.88rem;line-height:1.55}
+  .guide p{margin:0 0 10px}
+  .guide b,.guide strong{color:var(--text);font-weight:600}
+  .guide ol,.guide ul{margin:0 0 10px;padding-left:20px}
+  .guide li{margin-bottom:7px}
+  .guide li::marker{color:var(--line)}
+  .guide ol li::marker{color:var(--dim);font-weight:700}
+  table{width:100%;border-collapse:collapse;margin:4px 0 12px;font-size:.82rem}
+  th{text-align:left;color:var(--dim);font-weight:600;font-size:.7rem;text-transform:uppercase;
+    letter-spacing:.06em;padding:7px 8px 7px 0;border-bottom:1px solid var(--line);vertical-align:bottom}
+  td{padding:9px 8px 9px 0;border-bottom:1px solid var(--line);color:var(--dim);vertical-align:top}
+  td:first-child{color:var(--text);font-weight:600}
+  td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .swatch{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px;vertical-align:baseline}
+  .note{border-left:2px solid var(--accent);background:rgba(255,176,32,.06);border-radius:0 8px 8px 0;
+    padding:10px 12px;margin:12px 0}
+  .note p:last-child{margin-bottom:0}
+  .note.good{border-color:var(--good);background:rgba(46,230,168,.06)}
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .toc a{border:1px solid var(--line);background:var(--panel-2);color:var(--dim);border-radius:999px;
+    padding:7px 12px;font-size:.78rem;font-weight:600;text-decoration:none}
+  .back{display:inline-flex;align-items:center;gap:7px;color:var(--dim);text-decoration:none;
+    font-size:.85rem;font-weight:600;padding:8px 0}
+  .back:hover{color:var(--text)}
+  .cta{display:block;text-align:center;background:var(--good);color:#04241a;border-radius:14px;
+    padding:15px;font-weight:700;text-decoration:none;margin:18px 0 8px}
+  kbd{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;
+    font:600 .82em/1.4 inherit;color:var(--text)}
+</style>
+</head>
+<body>
+<div class="guide">
+
+<a class="back" href="./">&larr; Back to the meter</a>
+<h1>How to use it, and what the numbers mean</h1>
+<p class="lede">Everything the app measures, how to get a reading you can trust, and how to tell a
+healthy turntable from one that needs attention.</p>
+
+<nav class="toc">
+  <a href="#start">Quick start</a>
+  <a href="#trust">A reading you can trust</a>
+  <a href="#numbers">Reading the numbers</a>
+  <a href="#map">The platter map</a>
+  <a href="#faults">Diagnosing faults</a>
+  <a href="#tests">Tests worth running</a>
+  <a href="#settings">Settings</a>
+  <a href="#limits">Limits</a>
+</nav>
+
+<!-- ------------------------------------------------------------------ -->
+<section id="start">
+<h2><span class="n">01</span> Quick start</h2>
+<ol>
+  <li>Put a <b>record on the platter</b> so the phone lies on vinyl rather than on bare metal or the
+    ribs of a mat. Anywhere on the record is fine.</li>
+  <li>With the platter <b>stopped</b> and the phone lying still on it, press <b>Zero sensor</b> and
+    wait two seconds.</li>
+  <li>Press <b>Start</b>, then <b>start the turntable</b>. The first few seconds of spin-up are
+    ignored automatically.</li>
+  <li>Leave it running for <b>at least a minute</b>. Speed settles in seconds; wow and flutter need
+    revolutions before they mean anything.</li>
+  <li>Stop the platter. The reading <b>freezes</b>, and <b>Save run</b> files it in History.</li>
+</ol>
+<div class="note good">
+  <p><b>Placement genuinely does not matter.</b> A gyroscope measures how fast the whole platter
+  turns, not how fast the phone travels, so off-centre reads exactly the same as centred. What
+  matters is that the phone lies flat and cannot slide.</p>
+</div>
+</section>
+
+<!-- ------------------------------------------------------------------ -->
+<section id="trust">
+<h2><span class="n">02</span> Getting a reading you can trust</h2>
+
+<h3>Zero the sensor every session</h3>
+<p>A phone's gyroscope has a small standing offset that changes with temperature and with time since
+the phone was last woken. Left uncorrected it is the largest single error in the measurement — bigger
+than anything your turntable is doing wrong. Zeroing takes two seconds and removes it.</p>
+<p>Zeroing also measures your phone's <b>noise floor</b>, printed under the buttons. Any wow and
+flutter figure near that number is the phone talking, not the deck.</p>
+
+<h3>Let it run</h3>
+<p>Thirty seconds gives a solid average speed. Wow is a slow wavering that can take several
+revolutions to come round, and the once-per-revolution figure needs a good number of turns before
+it separates from noise — a full side is not overkill.</p>
+
+<h3>Things that quietly ruin a reading</h3>
+<ul>
+  <li><b>A sliding phone.</b> On a slick mat a phone can creep, and creeping is rotation the app will
+    faithfully report. A record under it usually solves this.</li>
+  <li><b>Holding or touching the phone</b> while it measures.</li>
+  <li><b>A thick or uneven case</b> that leaves the phone rocking rather than lying flat.</li>
+  <li><b>Backgrounding the app.</b> iOS stops delivering sensor data; the app leaves a gap rather
+    than reporting a false slow patch, but you lose that stretch of the run.</li>
+  <li><b>An unlevel turntable.</b> Not an error in the measurement, but it is a real cause of speed
+    variation worth ruling out first.</li>
+</ul>
+</section>
+
+<!-- ------------------------------------------------------------------ -->
+<section id="numbers">
+<h2><span class="n">03</span> Reading the numbers</h2>
+
+<h3>The big number</h3>
+<p>While the platter turns this is the live speed, damped slightly so it is readable. When you stop,
+it switches to the <b>average</b> for the run — that is the figure to quote and the one to trust.
+The average is the total angle the platter turned divided by the time actually measured, so a brief
+wobble cannot skew it.</p>
+
+<h3>Percentage — how far off target</h3>
+<p>The error against the nominal speed. The app picks the target automatically from what it sees;
+tap a chip to lock it if you want.</p>
+<table>
+  <tr><th>Reading</th><th>What it means</th></tr>
+  <tr><td class="num"><span class="swatch" style="background:#2ee6a8"></span>under ±0.1%</td>
+      <td>Excellent. A well-adjusted direct drive lives here, and it is inaudible.</td></tr>
+  <tr><td class="num"><span class="swatch" style="background:#2ee6a8"></span>±0.1 – 0.3%</td>
+      <td>Healthy. Typical of a good belt drive in decent order. Nobody hears this.</td></tr>
+  <tr><td class="num"><span class="swatch" style="background:#ffb020"></span>±0.3 – 0.8%</td>
+      <td>Off, and worth correcting. Approaching the range where piano and sustained notes sound
+          faintly wrong against a reference.</td></tr>
+  <tr><td class="num"><span class="swatch" style="background:#ff5a5f"></span>over ±1%</td>
+      <td>Audibly off pitch to most listeners in an A/B. Something needs adjusting — see
+          <a href="#faults" style="color:var(--text)">faults</a>.</td></tr>
+</table>
+<p>The green band on the meter and the graph is the <b>“on speed” threshold</b> from Settings, so you
+can set your own standard.</p>
+
+<h3>Cents — the same error, as pitch</h3>
+<p>A cent is a hundredth of a semitone, which makes speed error audible rather than abstract. Speed
+and pitch move together: run 1% fast and everything plays 1% sharp.</p>
+<table>
+  <tr><th>Speed error</th><th>Pitch error</th><th>In practice</th></tr>
+  <tr><td class="num">0.1%</td><td class="num">1.7 cents</td><td>Inaudible.</td></tr>
+  <tr><td class="num">0.3%</td><td class="num">5.2 cents</td><td>At the edge of what a trained ear catches in direct comparison.</td></tr>
+  <tr><td class="num">0.5%</td><td class="num">8.6 cents</td><td>Noticeable to some against a reference; rarely noticed alone.</td></tr>
+  <tr><td class="num">1.0%</td><td class="num">17.2 cents</td><td>Most people hear this when they have something to compare against.</td></tr>
+  <tr><td class="num">5.9%</td><td class="num">100 cents</td><td>A full semitone.</td></tr>
+</table>
+<p>These are rough thresholds. Steady pitch error is far harder to notice than <i>wavering</i> pitch
+error, which is why a deck can be 0.5% fast and sound fine while a deck with real wow does not.</p>
+
+<h3>Wow &amp; flutter — peak and RMS</h3>
+<p>Not how far from the target, but how much the speed <b>moves around its own average</b>. Peak is
+the largest departure in the run; RMS is the typical one. A deck can sit dead on 33.33 and still be
+unpleasant if these are high.</p>
+<div class="note">
+  <p><b>Do not compare these with a manufacturer's spec sheet.</b> Published figures are weighted
+  with a DIN/IEC filter that deliberately de-emphasises the frequencies the ear cares least about,
+  and they are measured from a 3,150 Hz test record. These are unweighted and measured from a
+  gyroscope, so they read <b>higher</b> — often several times higher — for the same turntable. That
+  is the measurement differing, not your deck being bad.</p>
+</div>
+<p>Use them <b>relatively</b>, which is where they are genuinely strong:</p>
+<ul>
+  <li>Against your <b>noise floor</b>. Within about twice it, you are measuring the phone.</li>
+  <li>Against <b>the same deck last month</b>, or before and after a new belt.</li>
+  <li>Against <b>another deck</b> measured the same way, on the same phone.</li>
+</ul>
+<p>Two runs on the same turntable should land close to each other. If they do not, something in the
+setup is moving — start with the phone sliding.</p>
+
+<h3>The rest of the panel</h3>
+<table>
+  <tr><th>Readout</th><th>Meaning</th></tr>
+  <tr><td>Min / max</td><td>The extremes of the smoothed speed during the run. A wide spread with a
+      low RMS means one isolated event rather than continuous wavering — look at the graph to find it.</td></tr>
+  <tr><td>Once per rev</td><td>The size of the error that repeats exactly once per revolution. See
+      <a href="#map" style="color:var(--text)">the platter map</a>.</td></tr>
+  <tr><td>Revolutions</td><td>Whole turns measured. Treat the wow figures as provisional under about ten.</td></tr>
+  <tr><td>Elapsed</td><td>Time actually sampled, which excludes any gap where iOS suspended the app.</td></tr>
+  <tr><td>Drift / 20 min side</td><td>How much early or late a 20-minute side would finish. A tangible
+      way to feel what the percentage means: 0.3% is about 3.6 seconds a side.</td></tr>
+</table>
+
+<h3>The speed graph</h3>
+<p>Deviation from the target over time, smoothed. The dashed line is the run's own average, the shaded
+band is your “on speed” threshold. Shape tells you more than height: a slow sine wave is wow, a steady
+climb or fall is drift, and a single spike is usually something bumping the table.</p>
+</section>
+
+<!-- ------------------------------------------------------------------ -->
+<section id="map">
+<h2><span class="n">04</span> The platter map</h2>
+<p>The same error, but arranged by <b>where the platter was in its rotation</b> rather than by time.
+Every revolution is folded onto one circle and averaged, so anything that happens at a consistent
+point in the turn adds up while everything random cancels out.</p>
+<p>Blue is slow, red is fast, green is within your threshold. The number in the middle is the strength
+of the once-per-revolution component.</p>
+<table>
+  <tr><th>What you see</th><th>What it suggests</th></tr>
+  <tr><td>Evenly green</td><td>Nothing is happening at a fixed point in the rotation. This is the
+      good result — whatever variation exists is not tied to the platter turning.</td></tr>
+  <tr><td>One blue arc, one red arc, opposite each other</td><td>A classic once-per-revolution
+      pattern: the platter speeds up on one half and slows on the other. Suspect the belt joint, an
+      eccentric pulley or spindle, or an off-centre platter.</td></tr>
+  <tr><td>A single narrow spike</td><td>Something catching at one spot — a flat on the belt, debris
+      in the bearing, or a rubbing plinth.</td></tr>
+  <tr><td>A busy, changing pattern</td><td>Usually just too few revolutions. Run it longer before
+      reading anything into it.</td></tr>
+</table>
+<p>Note that a belt drive turns its pulley many times per platter revolution, so a pulley fault often
+shows up in wow and flutter without leaving a clean once-per-revolution signature.</p>
+</section>
+
+<!-- ------------------------------------------------------------------ -->
+<section id="faults">
+<h2><span class="n">05</span> Diagnosing faults</h2>
+<table>
+  <tr><th>Symptom</th><th>Likely cause</th></tr>
+  <tr><td>Consistently fast or slow, rock steady</td>
+      <td>A speed offset, not an instability. On decks with a trim, adjust it. On a belt drive with
+          no adjustment, a worn belt or the wrong belt size is the usual culprit; on 45 check the
+          pulley step or the speed selector is fully engaged.</td></tr>
+  <tr><td>Slowly drifts over several minutes</td>
+      <td>Belt warming and stretching as it runs, or motor thermal drift. Compare a cold run with one
+          after twenty minutes — see <a href="#tests" style="color:var(--text)">tests</a>.</td></tr>
+  <tr><td>Clear once-per-revolution pattern</td>
+      <td>Belt joint, eccentric pulley, bent spindle, or an off-centre platter. Rotating the belt
+          on the pulley and re-measuring is a cheap test.</td></tr>
+  <tr><td>High wow with a clean map</td>
+      <td>Something varying that is not locked to the platter: a tired belt, a slipping pulley, a
+          dry bearing, or an unstable motor supply.</td></tr>
+  <tr><td>Speed drops when the stylus goes down</td>
+      <td>Stylus drag overcoming the motor. Normal in tiny amounts; a large drop points to a weak
+          belt, low torque, or a bearing that needs attention.</td></tr>
+  <tr><td>Wild or impossible numbers</td>
+      <td>Almost always the phone, not the deck: it slid, it was not zeroed, or it was picked up
+          mid-run. Re-zero and repeat.</td></tr>
+  <tr><td>Two runs disagree</td>
+      <td>Trust neither. Re-zero, make sure the phone cannot creep, and run both again for longer.</td></tr>
+</table>
+<div class="note">
+  <p><b>Before changing anything mechanical, level the turntable and check the belt is clean.</b>
+  Both are free, both are common causes, and both change the numbers.</p>
+</div>
+</section>
+
+<!-- ------------------------------------------------------------------ -->
+<section id="tests">
+<h2><span class="n">06</span> Tests worth running</h2>
+<ul>
+  <li><b>Repeatability.</b> Two runs back to back, nothing touched. The averages should agree closely.
+    If they do not, fix the setup before believing anything else.</li>
+  <li><b>Stylus drag.</b> One run with the arm parked, one with the stylus in a groove. The difference
+    is how much your cartridge loads the motor — one of the more interesting things this app can show
+    you, and invisible to a strobe disc.</li>
+  <li><b>Cold versus warm.</b> A run from a cold start, another after twenty minutes. Belt drives
+    commonly move a little as they warm.</li>
+  <li><b>Before and after a new belt.</b> Save both runs to History; the comparison is the clearest
+    evidence you will get of whether the old belt was actually tired.</li>
+  <li><b>33 against 45.</b> Both speeds should be off by a similar <i>percentage</i>. If only one is
+    wrong, the fault is in the speed change mechanism rather than the motor.</li>
+  <li><b>Outer versus inner.</b> Same run, phone near the rim and then near the label. They should
+    read identically — a useful sanity check that the app is behaving.</li>
+</ul>
+</section>
+
+<!-- ------------------------------------------------------------------ -->
+<section id="settings">
+<h2><span class="n">07</span> Settings</h2>
+<table>
+  <tr><th>Setting</th><th>What it does</th></tr>
+  <tr><td>Smoothing window</td><td>How much averaging sits behind the graph and the wow figures. Short
+      sees faster wavering but carries more sensor noise; long is quiet but flattens real wow.
+      About a third of a second is a sensible middle.</td></tr>
+  <tr><td>“On speed” threshold</td><td>The green band, on the meter, the graph and the platter map.
+      Set it to the standard you want to hold the deck to.</td></tr>
+  <tr><td>Graph scale / window</td><td>Full scale of the vertical axis, and how many seconds are shown.
+      Narrow the scale to make a good deck's small variations visible.</td></tr>
+  <tr><td>Settling time</td><td>Seconds ignored at the start so spin-up never drags the average down.</td></tr>
+  <tr><td>Counter-rotate the display</td><td>Turns the readout against the platter so the numbers stay
+      upright while the phone spins. It looks strange standing still and makes sense in motion.</td></tr>
+  <tr><td>Freeze on stop</td><td>On, the reading holds when the platter stops. Off, the app clears and
+      waits for the next run — useful for repeated back-to-back measurements.</td></tr>
+  <tr><td>78 and 16 references</td><td>78.26 comes from the gearing of mains-driven decks; early
+      shellac was cut at a range of speeds, so pick what suits the record. The 16 format is nominally
+      16⅔.</td></tr>
+  <tr><td>Compass calibration</td><td>Optional. Counts real revolutions with the magnetometer and
+      corrects any scale error in the gyroscope. Run it once, away from speakers and the motor; it
+      refuses a correction larger than 5%, since that is magnetic interference rather than a sensor
+      fault.</td></tr>
+</table>
+<p>History holds your saved runs and exports them as CSV. Everything stays on the phone.</p>
+</section>
+
+<!-- ------------------------------------------------------------------ -->
+<section id="limits">
+<h2><span class="n">08</span> What this cannot do</h2>
+<p>iOS delivers roughly <b>60 gyroscope readings a second</b>. That is plenty for speed accuracy and
+for wow — the slow wavering, below a few hertz — but anything varying faster than about 30 times a
+second cannot be seen at all. That is the flutter end of the band a 3,150 Hz test record measures,
+and no phone app reading a gyroscope can reach it.</p>
+<p>So: treat <b>average speed as a real measurement</b>, good to a few thousandths of an RPM over a
+minute. Treat <b>wow and flutter as a wow measurement</b> — excellent for comparing decks, belts and
+before-and-afters, not a substitute for a test record and a lab analyser, and not comparable with a
+weighted spec.</p>
+<p>The phone is part of the measurement. Zero it, note the noise floor, and be suspicious of anything
+close to it.</p>
+</section>
+
+<a class="cta" href="./">Back to the meter</a>
+<p class="foot">Runs entirely on the phone. No account, no network, nothing leaves the device.</p>
+
+</div>
+</body>
+</html>

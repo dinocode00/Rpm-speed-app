@@ -26,7 +26,7 @@
   <div class="bar-actions">
     <button class="icon-btn" id="btnHistory" aria-label="History" title="History">&#9776;</button>
     <button class="icon-btn" id="btnSettings" aria-label="Settings" title="Settings">&#9881;</button>
-    <button class="icon-btn" id="btnHelp" aria-label="Help" title="Help">?</button>
+    <a class="icon-btn" href="guide.html" aria-label="Guide" title="Guide">?</a>
   </div>
 </header>
 
@@ -92,6 +92,7 @@
     <button class="btn" id="btnSave" disabled>Save run</button>
   </div>
   <p class="foot" id="sensorInfo"></p>
+  <p class="foot"><a class="guide-link" href="guide.html">How to use it, and what the numbers mean &rarr;</a></p>
 </main>
 
 <!-- ---------------- sheets ---------------- -->
@@ -153,36 +154,6 @@
   <div class="sheet-inner">
     <div class="sheet-head"><h2>History</h2><button class="icon-btn" data-close>&times;</button></div>
     <div id="historyList" class="history"></div>
-  </div>
-</div>
-
-<div class="sheet" id="sheetHelp" hidden>
-  <div class="sheet-inner">
-    <div class="sheet-head"><h2>How to use it</h2><button class="icon-btn" data-close>&times;</button></div>
-    <ol class="help">
-      <li>Put a record on the platter so the phone sits on vinyl, not on bare metal or the mat's ribs.</li>
-      <li>Press <b>Zero sensor</b> with the phone lying still on the stopped platter. Two seconds.</li>
-      <li>Press <b>Start</b>, lay the phone flat next to the spindle, and start the turntable.</li>
-      <li>Give it a full minute. Wow and flutter need revolutions to show themselves.</li>
-      <li>Stop the platter; the reading freezes. <b>Save run</b> keeps it in History.</li>
-    </ol>
-    <p class="hint">The gyroscope measures how fast the whole platter turns, so it does not matter where on the
-      record the phone sits, or whether it is centred. It does matter that the phone is flat and cannot slide.</p>
-    <h3>Reading the numbers</h3>
-    <ul class="help">
-      <li><b>Average</b> is the honest speed figure: total angle turned divided by total time.</li>
-      <li><b>%</b> is how far that is from the target. <b>Cents</b> is the same error as musical pitch — 17 cents is
-        roughly the smallest shift most people can hear on a sustained note.</li>
-      <li><b>W&amp;F peak</b> is the largest departure from your own average; <b>RMS</b> is the typical one.
-        Both are measured after smoothing, so they describe wow (slow wavering) rather than true flutter.</li>
-      <li><b>Once per rev</b> isolates the part of the error that repeats exactly once every turn.</li>
-    </ul>
-    <h3>What this cannot do</h3>
-    <p class="hint">Phone gyroscopes report about 60 readings a second, so anything wavering faster than ~30 times a
-      second is invisible here — that is the flutter end of the band a 3,150 Hz test record measures. Treat the
-      W&amp;F figures as a wow measurement and a good relative indicator, not as a lab result. The noise floor of
-      your own sensor is shown under the buttons after you zero it; readings near that floor are the phone, not the deck.</p>
-    <p class="hint" id="aboutLine"></p>
   </div>
 </div>
 

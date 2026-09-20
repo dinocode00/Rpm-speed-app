@@ -26,7 +26,7 @@ jobs:
       - name: Collect the site
         run: |
           mkdir -p _site
-          cp index.html app.css manifest.webmanifest sw.js _site/
+          cp index.html guide.html app.css manifest.webmanifest sw.js _site/
           cp -r js icons _site/
 
       # `enablement` only works if the Actions token may administer the repository; when it

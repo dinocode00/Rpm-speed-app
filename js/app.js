@@ -424,7 +424,6 @@ function wire() {
   $('btnSave').onclick = save;
   $('btnSettings').onclick = () => openSheet('sheetSettings');
   $('btnHistory').onclick = () => { renderHistory(); openSheet('sheetHistory'); };
-  $('btnHelp').onclick = () => openSheet('sheetHelp');
   $('btnExport').onclick = exportCsv;
   $('btnWipe').onclick = () => { if (confirm('Erase every saved run?')) { store.clearHistory(); renderHistory(); toast('History erased'); } };
   $('btnCompass').onclick = openCompass;
@@ -461,8 +460,6 @@ function setTab(t) {
 
 function boot() {
   $('simBadge').hidden = !SIM;
-  $('aboutLine').textContent =
-    'Runs entirely on the phone. No account, no network, no data leaves the device.';
   buildTargets();
   bindSettings();
   wire();

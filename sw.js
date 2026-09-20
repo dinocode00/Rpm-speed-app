@@ -1,8 +1,8 @@
 // Cache-first service worker: once the app has been opened, it works with no network at all —
 // which matters, because a turntable often lives somewhere with poor signal.
-const CACHE = 'rpm-v1';
+const CACHE = 'rpm-v2';
 const ASSETS = [
-  './', 'index.html', 'app.css', 'manifest.webmanifest',
+  './', 'index.html', 'guide.html', 'app.css', 'manifest.webmanifest',
   'js/app.js', 'js/engine.js', 'js/sensors.js', 'js/charts.js', 'js/store.js',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png',
 ];

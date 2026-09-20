@@ -42,6 +42,7 @@ small{display:block;color:var(--dim);font-size:.75rem;font-weight:400;margin-top
 .badge{background:var(--warn);color:#241a00;font-size:.6rem;font-weight:800;padding:2px 6px;border-radius:5px;letter-spacing:.1em}
 .bar-actions{display:flex;gap:6px}
 .icon-btn{
+  display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
   width:36px;height:36px;border-radius:10px;border:1px solid var(--line);
   background:var(--panel);color:var(--text);font-size:1rem;line-height:1;cursor:pointer;
 }
@@ -122,6 +123,8 @@ canvas{width:100%;display:block;border-radius:10px;background:#0e1216}
 .btn.danger{color:var(--bad)}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .foot{color:var(--dim);font-size:.72rem;text-align:center;margin:12px 0 0;white-space:pre-line}
+.guide-link{color:var(--accent);text-decoration:none;font-weight:600;font-size:.82rem;
+  display:inline-block;padding:8px 4px}
 
 /* ---------- sheets & modal ---------- */
 .sheet{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;display:flex;align-items:flex-end;justify-content:center}
