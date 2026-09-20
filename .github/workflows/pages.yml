@@ -28,6 +28,12 @@ jobs:
           mkdir -p _site
           cp index.html guide.html app.css manifest.webmanifest sw.js _site/
           cp -r js icons _site/
+          # Stamp the build into the app footer and the cache name, so the running version is
+          # visible in the UI and every deploy starts a clean cache.
+          BUILD="$(date -u +%Y-%m-%d)-${GITHUB_SHA::7}"
+          sed -i "s/__BUILD__/$BUILD/g" _site/js/app.js _site/sw.js
+          echo "Build stamp: $BUILD"
+          grep -n "$BUILD" _site/sw.js _site/js/app.js
 
       # `enablement` only works if the Actions token may administer the repository; when it
       # cannot, switch Pages on by hand once under Settings ▸ Pages ▸ Source: GitHub Actions.

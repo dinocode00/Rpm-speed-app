@@ -8,6 +8,7 @@ import * as store from './store.js';
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
 const SIM = params.has('sim');
+const BUILD = '__BUILD__';   // stamped at deploy time
 
 let settings = store.loadSettings();
 let cal = store.loadCalibration();
@@ -482,6 +483,7 @@ function setTab(t) {
 
 function boot() {
   $('simBadge').hidden = !SIM;
+  $('buildStamp').textContent = BUILD.startsWith('__') ? 'dev build' : `build ${BUILD}`;
   buildTargets();
   bindSettings();
   wire();
@@ -491,7 +493,7 @@ function boot() {
   else if (!SIM && needsPermission()) setStatus('Press Start — iOS will ask for motion access.');
   render();
 
-  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  if ('serviceWorker' in navigator && window.isSecureContext) {   // https, or localhost
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
 }
