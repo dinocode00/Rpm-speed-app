@@ -10,6 +10,7 @@ export const DEFAULTS = {
   scalePct: 1.0,        // graph and meter full scale, in percent
   windowSec: 60,        // scrolling graph width
   settleSec: 3,         // ignored while the platter gets up to speed
+  autoStopSec: 0,       // end the run after this much measured time (0 = run until stopped)
   counterRotate: true,
   freezeOnStop: true,
   wakeLock: true,

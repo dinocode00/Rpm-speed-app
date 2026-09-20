@@ -107,6 +107,9 @@ flutter figure near that number is the phone talking, not the deck.</p>
 <p>Thirty seconds gives a solid average speed. Wow is a slow wavering that can take several
 revolutions to come round, and the once-per-revolution figure needs a good number of turns before
 it separates from noise — a full side is not overkill.</p>
+<p>If you would rather not watch the clock, <b>Stop automatically after</b> in Settings ends the run
+at a fixed length and freezes the reading. It is also the honest way to compare two runs, since a
+longer run averages away variation a shorter one still shows.</p>
 
 <h3>Things that quietly ruin a reading</h3>
 <ul>
@@ -265,7 +268,8 @@ shows up in wow and flutter without leaving a clean once-per-revolution signatur
 <h2><span class="n">06</span> Tests worth running</h2>
 <ul>
   <li><b>Repeatability.</b> Two runs back to back, nothing touched. The averages should agree closely.
-    If they do not, fix the setup before believing anything else.</li>
+    If they do not, fix the setup before believing anything else. Set <b>Stop automatically after</b>
+    to a fixed length first — comparisons only mean something when both runs cover the same span.</li>
   <li><b>Stylus drag.</b> One run with the arm parked, one with the stylus in a groove. The difference
     is how much your cartridge loads the motor — one of the more interesting things this app can show
     you, and invisible to a strobe disc.</li>
@@ -293,6 +297,10 @@ shows up in wow and flutter without leaving a clean once-per-revolution signatur
   <tr><td>Graph scale / window</td><td>Full scale of the vertical axis, and how many seconds are shown.
       Narrow the scale to make a good deck's small variations visible.</td></tr>
   <tr><td>Settling time</td><td>Seconds ignored at the start so spin-up never drags the average down.</td></tr>
+  <tr><td>Stop automatically after</td><td>Ends the run once it has gathered that much measured time,
+      freezing the reading exactly as stopping the platter would. Off by default. The counter beside
+      <b>Elapsed</b> shows progress towards it, and the limit counts <i>measured</i> time, so a stretch
+      where iOS suspended the app does not eat into the run.</td></tr>
   <tr><td>Counter-rotate the display</td><td>Turns the readout against the platter so the numbers stay
       upright while the phone spins. It looks strange standing still and makes sense in motion.</td></tr>
   <tr><td>Freeze on stop</td><td>On, the reading holds when the platter stops. Off, the app clears and

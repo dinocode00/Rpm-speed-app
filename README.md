@@ -70,6 +70,8 @@ and cannot creep.
   see faster wow but carry more sensor noise; long windows are quiet but flatten real wavering.
 - **Settling time** — seconds ignored while the platter comes up to speed, so spin-up never drags
   the average down.
+- **Stop automatically after** — ends the run at a fixed length of measured time and freezes the
+  reading, so repeat measurements cover the same span and are worth comparing. Off by default.
 - **Counter-rotate the display** — turns the readout against the platter so the numbers stay
   upright and readable while the phone spins.
 - **Gyroscope scale calibration** — optional. Runs the magnetometer alongside the gyroscope, counts

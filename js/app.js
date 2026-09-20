@@ -60,7 +60,7 @@ async function start() {
   setStatus('Waiting for the platter to turn…');
 }
 
-function stop() {
+function stop(message) {
   running = false;
   source.stop();
   engine.freeze();
@@ -69,7 +69,7 @@ function stop() {
   $('btnStart').textContent = 'Start';
   $('btnStart').classList.remove('is-stop');
   $('btnSave').disabled = !(engine.stats && engine.stats.samples > 30);
-  setStatus(engine.stats ? 'Stopped. Reading held.' : 'Stopped.');
+  setStatus(message || (engine.stats ? 'Stopped. Reading held.' : 'Stopped.'));
 }
 
 function permissionProblem(kind) {
@@ -170,6 +170,12 @@ function render() {
   displayRpm += (live - displayRpm) * 0.18;           // a little damping, purely cosmetic
 
   if (frame % 15 === 0 && st === STATE.MEASURING) engine.computeStats();
+
+  if (running && st === STATE.MEASURING && settings.autoStopSec > 0
+      && engine.elapsed >= settings.autoStopSec) {
+    stop(`Run complete — stopped automatically after ${fmtClock(settings.autoStopSec)}.`);
+    toast('Run complete');
+  }
   const s = engine.stats;
   lastStats = s;
 
@@ -215,7 +221,9 @@ function render() {
 }
 
 function updateStats(s, target) {
-  $('sTime').textContent = fmtClock(engine.elapsed);
+  $('sTime').textContent = settings.autoStopSec
+    ? `${fmtClock(engine.elapsed)} / ${fmtClock(settings.autoStopSec)}`
+    : fmtClock(engine.elapsed);
   if (!s) {
     for (const id of ['sAvg', 'sDrift', 'sWfPeak', 'sWfRms', 'sRange', 'sHarm', 'sRevs']) $(id).textContent = '--';
     return;
@@ -349,6 +357,20 @@ function bindSettings() {
     el.checked = settings[key];
     el.onchange = () => { settings[key] = el.checked; store.saveSettings(settings); };
   }
+  const auto = $('setAutoStop');
+  auto.value = String(settings.autoStopSec);
+  const showAuto = () => {
+    $('lblAutoStop').textContent = settings.autoStopSec
+      ? `Ends the run at ${fmtClock(settings.autoStopSec)} of measured time`
+      : 'Runs until you stop it, or the platter does';
+  };
+  showAuto();
+  auto.onchange = () => {
+    settings.autoStopSec = Number(auto.value);
+    store.saveSettings(settings);
+    showAuto();
+  };
+
   for (const [id, key] of [['set78', 'ref78'], ['set16', 'ref16']]) {
     const el = $(id);
     el.value = String(settings[key]);

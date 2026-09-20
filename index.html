@@ -115,6 +115,18 @@
     <label class="row"><span>Settling time ignored at start<small id="lblSettle"></small></span>
       <input type="range" id="setSettle" min="0" max="20" step="1"></label>
 
+    <label class="row"><span>Stop automatically after<small id="lblAutoStop"></small></span>
+      <select id="setAutoStop">
+        <option value="0">Off</option>
+        <option value="30">30 seconds</option>
+        <option value="60">1 minute</option>
+        <option value="120">2 minutes</option>
+        <option value="180">3 minutes</option>
+        <option value="300">5 minutes</option>
+        <option value="600">10 minutes</option>
+        <option value="1200">20 minutes</option>
+      </select></label>
+
     <label class="row switch"><span>Counter-rotate the display<small>Keeps the numbers upright while the phone spins</small></span>
       <input type="checkbox" id="setCounter"></label>
 
