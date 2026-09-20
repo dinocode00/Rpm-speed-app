@@ -13,14 +13,16 @@ the phone's gyroscope — and needs no App Store account, no network, and no dat
 
 The one requirement is that the page is served over **https** — iOS refuses motion sensors otherwise.
 
-### Option A — GitHub Pages (no tooling needed)
+### Option A — GitHub Pages (one switch, no tooling)
 
-1. Push this repository to GitHub (it already is).
-2. Repository ▸ **Settings ▸ Pages ▸ Source: GitHub Actions**.
-3. The included workflow (`.github/workflows/pages.yml`) publishes on every push to `main` or to
-   the development branch, and prints the URL — normally
-   `https://<user>.github.io/Rpm-speed-app/`.
-4. Open that URL in **Safari** on the iPhone, then **Share ▸ Add to Home Screen**.
+1. Repository ▸ **Settings ▸ Pages ▸ Source: GitHub Actions**. This has to be done by hand once:
+   the Actions token is not allowed to create a Pages site, so the first deploy fails with
+   *"Resource not accessible by integration"* until the switch is flipped. (On a **private**
+   repository Pages also needs a paid GitHub plan — if that is in the way, use Option B.)
+2. Actions ▸ **Deploy to GitHub Pages** ▸ **Run workflow**, or just push again. Every push to
+   `main` or to the development branch publishes, and the run prints the URL — normally
+   `https://dinocode00.github.io/Rpm-speed-app/`.
+3. Open that URL in **Safari** on the iPhone, then **Share ▸ Add to Home Screen**.
 
 ### Option B — any static host
 

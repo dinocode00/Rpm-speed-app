@@ -22,12 +22,22 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      # turns Pages on automatically the first time, so there is no manual setup step
+
+      - name: Collect the site
+        run: |
+          mkdir -p _site
+          cp index.html app.css manifest.webmanifest sw.js _site/
+          cp -r js icons _site/
+
+      # `enablement` only works if the Actions token may administer the repository; when it
+      # cannot, switch Pages on by hand once under Settings ▸ Pages ▸ Source: GitHub Actions.
       - uses: actions/configure-pages@v5
         with:
           enablement: true
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
+
       - id: deploy
         uses: actions/deploy-pages@v4
